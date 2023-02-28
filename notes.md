@@ -4,6 +4,7 @@
   - [02](#02)
     - [25](#25)
     - [26](#26)
+    - [27](#27)
 
 **Reference**
 - dbt Fundamentals [[*link*]](https://courses.getdbt.com/courses/fundamentals)
@@ -41,4 +42,8 @@
     )
     ```
   * `Compile` will show the actual referencing logic (with the actual table/view names)
+
+### 27
+* Naming conventions
+  * Sources
 * 
