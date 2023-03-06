@@ -70,4 +70,5 @@
         staging:
           +materialized: view
     ```
+  * `dbt run --select dim_customers+` will attempt to only materialize dim_customers and its downstream models.
   * 
