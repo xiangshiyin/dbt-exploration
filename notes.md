@@ -71,4 +71,22 @@
           +materialized: view
     ```
   * `dbt run --select dim_customers+` will attempt to only materialize dim_customers and its downstream models.
-  * 
+  * You could define `sources` in yaml and reference them using the `source(schema, table)` pattern in `staging` models
+    * The yaml could stay under the `staging` subfolders and here is an example (with a freshness check included)
+      ```yaml
+      version: 2
+
+      sources:
+        - name: jaffle_shop
+          database: "dbt-tutorial"
+          schema: jaffle_shop
+          tables:
+            - name: customers
+            - name: orders
+              loaded_at_field: _etl_loaded_at
+              freshness:
+                warn_after: {count: 12, period: hour}
+                error_after: {count: 24, period: hour}    
+      ```
+  * `dbt source freshness` can be used to check the freshness status
+  *  
