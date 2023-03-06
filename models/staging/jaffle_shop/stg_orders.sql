@@ -1,5 +1,11 @@
 
-with orders as (
+with 
+
+source as (
+    select * from {{ source('jaffle_shop', 'orders') }}
+),
+
+staged as (
 
     select
         id as order_id,
@@ -7,8 +13,8 @@ with orders as (
         order_date,
         status
 
-    from `dbt-tutorial.jaffle_shop.orders`
+    from source
 
 )
 
-select * from orders
+select * from staged
