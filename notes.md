@@ -4,7 +4,8 @@
   - [02](#02)
     - [25](#25)
     - [26](#26)
-    - [27](#27)
+  - [03](#03)
+    - [05](#05)
 
 **Reference**
 - dbt Fundamentals [[*link*]](https://courses.getdbt.com/courses/fundamentals)
@@ -43,7 +44,31 @@
     ```
   * `Compile` will show the actual referencing logic (with the actual table/view names)
 
-### 27
+## 03
+### 05
 * Naming conventions
-  * Sources
-* 
+  * `Sources` (tables)- ways to reference the raw data in data warehouse
+  * `Staging` (models) - one to one with the source tables, rename columns and rename columns, etc.
+  * `Intermediate` (models) - always built on staging
+  * `Fact` (models)
+  * `Dimension` (models)
+* Organize the project
+  * Add folders under `models` - `staging` and `marts`
+    * `staging` contains staging
+      * All staging models and source configurations can be stored here. Further subfolders can be used to separate data by data source (e.g. Stripe, Segment, Salesforce)
+    * `marts` contains the final models
+      * All `intermediate`, `fact`, and `dimension` models can be stored here. Further subfolders can be used to separate data by business function (e.g. marketing, finance)
+  * If `dbt run -s staging` will run all models that exist in `models/staging`.
+  * Default materialization is `view`
+  * Define `materialized` option in `dbt_project.yml` by the folder structures under `models`
+    ```yaml
+    models:
+      jaffle_shop:
+        marts:
+          core:
+            +materialized: table
+        staging:
+          +materialized: view
+    ```
+  * `dbt run --select dim_customers+` will attempt to only materialize dim_customers and its downstream models.
+  * 
