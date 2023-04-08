@@ -10,6 +10,7 @@ packages = [{include = "dbt_exploration"}]
 python = "^3.10"
 dbt-bigquery = "^1.4.3"
 sqlfmt = "^0.0.3"
+sqlfluff = "^2.0.3"
 
 
 [build-system]
