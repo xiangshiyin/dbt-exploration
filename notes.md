@@ -6,6 +6,8 @@
     - [26](#26)
   - [03](#03)
     - [05](#05)
+  - [04](#04)
+    - [14](#14)
 
 **Reference**
 - dbt Fundamentals [[*link*]](https://courses.getdbt.com/courses/fundamentals)
@@ -89,4 +91,11 @@
                 error_after: {count: 24, period: hour}    
       ```
   * `dbt source freshness` can be used to check the freshness status
-  *  
+
+## 04
+
+### 14
+* `sqlfluff`
+  * `sqlfluff fix test.sql -v --show-lint-violations --dialect ansi`
+  * Repo https://github.com/sqlfluff/sqlfluff
+  * CLI reference https://docs.sqlfluff.com/en/stable/cli.html
