@@ -8,6 +8,7 @@
     - [05](#05)
   - [04](#04)
     - [14](#14)
+    - [15](#15)
 
 **Reference**
 - dbt Fundamentals [[*link*]](https://courses.getdbt.com/courses/fundamentals)
@@ -99,3 +100,66 @@
   * `sqlfluff fix test.sql -v --show-lint-violations --dialect ansi`
   * Repo https://github.com/sqlfluff/sqlfluff
   * CLI reference https://docs.sqlfluff.com/en/stable/cli.html
+
+### 15
+* `BigQuery` set up [[doc](https://docs.getdbt.com/reference/warehouse-setups/bigquery-setup)]
+  * **One way** to connect BigQuery from local dbt build [[general instructions](https://docs.getdbt.com/docs/quickstarts/dbt-core/manual-install#connect-to-bigquery)]
+    * Create a json key file for BigQuery connection [[instructions](https://docs.getdbt.com/docs/quickstarts/dbt-cloud/bigquery#generate-bigquery-credentials)]
+    * Create a `profiles.yml` file under `~/.dbt/` with the following format and update the content accordingly. The `dataset` field is critical since it determines the schemas of the models produced from `dbt run`.
+      ```yaml
+      jaffle_shop: # this needs to match the profile in your dbt_project.yml file
+        target: dev
+        outputs:
+          dev:
+            type: bigquery
+            method: service-account
+            keyfile: /Users/BBaggins/.dbt/dbt-tutorial-project-331118.json # replace this with the full path to your keyfile
+            project: grand-highway-265418 # Replace this with your project id
+            dataset: dbt_bbagins # Replace this with dbt_your_name, e.g. dbt_bilbo
+            threads: 1
+            timeout_seconds: 300
+            location: US
+            priority: interactive
+      ```
+    * Now you are all set. If you run `dbt debug`, you should have output similar to this
+      ```sh
+      ❯ dbt debug                                                                                                              (base)
+      20:23:33  Running with dbt=1.4.5
+      dbt version: 1.4.5
+      python version: 3.10.8
+      python path: /Users/xiangshiyin/Library/Caches/pypoetry/virtualenvs/dbt-exploration-jkldKHt5-py3.10/bin/python
+      os info: macOS-10.16-x86_64-i386-64bit
+      Using profiles.yml file at /Users/xiangshiyin/.dbt/profiles.yml
+      Using dbt_project.yml file at /Users/xiangshiyin/Documents/Learning/dbt-exploration/dbt_project.yml
+
+      Configuration:
+        profiles.yml file [OK found and valid]
+        dbt_project.yml file [OK found and valid]
+
+      Required dependencies:
+      - git [OK found]
+
+      Connection:
+        method: service-account
+        database: dbt-project-tutorial-379004
+        schema: dbt_xyin
+        location: US
+        priority: interactive
+        timeout_seconds: 300
+        maximum_bytes_billed: None
+        execution_project: dbt-project-tutorial-379004
+        job_retry_deadline_seconds: None
+        job_retries: 1
+        job_creation_timeout_seconds: None
+        job_execution_timeout_seconds: 300
+        gcs_bucket: None
+        Connection test: [OK connection ok]
+
+      All checks passed!
+      ```
+    * Keep in mind that the `profile` value in `dbt_project.yml` should match the profile you wanted to reference in `profile.yml`
+* According to the dbt documentation, the reason why `profile` is defined outside the project repo is below. More details in the FAQ [here](https://docs.getdbt.com/docs/quickstarts/dbt-core/manual-install#faqs).
+  ```
+  Profiles are stored separately to dbt projects to avoid checking credentials into version control. Database credentials are extremely sensitive information and should never be checked into version control.
+  ```
+* 
